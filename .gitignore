@@ -1,0 +1,17 @@
+# Dataset (too large to commit; see data/README.md for download steps)
+data/*.csv
+
+# Trained model artifacts (rebuild with `python -m src.train`)
+models/*.joblib
+models/*.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Secrets / environment
+.env
+.venv/
+venv/

@@ -1,0 +1,40 @@
+# Local streaming stack for realtime-transaction-risk-scoring.
+#
+#   docker compose up -d
+#   python -m src.train                  # build models/risk_model.joblib
+#   python -m streaming.consumer         # terminal 1
+#   python -m streaming.producer         # terminal 2
+#
+# Topics are auto-created on first publish: transactions.raw (input) and
+# review-high / review-medium / auto-approve (routing outputs).
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
+  # Production state-store option. The local pipeline uses the in-memory
+  # store (src/state.py InMemoryStateStore) so nothing in dev or CI needs
+  # Redis; in production the same StateStore interface is implemented over
+  # Redis sorted sets (one per entity, TTL = 24h window). Start it with:
+  #   docker compose --profile prod-state up -d
+  redis:
+    image: redis:7-alpine
+    profiles: ["prod-state"]
+    ports:
+      - "6379:6379"

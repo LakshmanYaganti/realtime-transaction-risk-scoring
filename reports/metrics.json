@@ -1,0 +1,102 @@
+{
+  "dataset": {
+    "rows": 284807,
+    "fraud": 492,
+    "fraud_rate": 0.001727485630620034,
+    "split": "chronological 70/15/15 by Time",
+    "train_rows": 199364,
+    "val_rows": 42721,
+    "test_rows": 42722,
+    "test_fraud": 52
+  },
+  "model_comparison": {
+    "logistic_regression": {
+      "validation": {
+        "threshold": 0.5,
+        "precision": 0.031119090365050867,
+        "recall": 0.9285714285714286,
+        "roc_auc": 0.9823588254005458,
+        "pr_auc": 0.8438538983933902,
+        "confusion_matrix": {
+          "tn": 41046,
+          "fp": 1619,
+          "fn": 4,
+          "tp": 52
+        }
+      },
+      "test": {
+        "threshold": 0.5,
+        "precision": 0.02319717599596571,
+        "recall": 0.8846153846153846,
+        "roc_auc": 0.9780220745975374,
+        "pr_auc": 0.7165107402276812,
+        "confusion_matrix": {
+          "tn": 40733,
+          "fp": 1937,
+          "fn": 6,
+          "tp": 46
+        }
+      }
+    },
+    "xgboost": {
+      "validation": {
+        "threshold": 0.5,
+        "precision": 0.8775510204081632,
+        "recall": 0.7678571428571429,
+        "roc_auc": 0.9814330079858029,
+        "pr_auc": 0.8593330479560807,
+        "confusion_matrix": {
+          "tn": 42659,
+          "fp": 6,
+          "fn": 13,
+          "tp": 43
+        }
+      },
+      "test": {
+        "threshold": 0.5,
+        "precision": 0.8478260869565217,
+        "recall": 0.75,
+        "roc_auc": 0.9715098880496115,
+        "pr_auc": 0.7721944755675064,
+        "confusion_matrix": {
+          "tn": 42663,
+          "fp": 7,
+          "fn": 13,
+          "tp": 39
+        }
+      }
+    }
+  },
+  "selected_model": "xgboost",
+  "replay": {
+    "events_replayed": 10000,
+    "entity_assignment": "synthetic seeded Zipf IDs (n_cards=5000, n_merchants=500, exponent=0.6); the source dataset is anonymized and carries no real card/merchant identifiers",
+    "latency": {
+      "count": 10000,
+      "mean_ms": 2.6378,
+      "p50_ms": 0.9442,
+      "p95_ms": 9.5597,
+      "p99_ms": 26.7515,
+      "max_ms": 214.4297,
+      "pct_within_sla": 100.0,
+      "sla_ms": 300000.0
+    },
+    "throughput_events_per_s": 332.86,
+    "sla_ms": 300000,
+    "routing_distribution": {
+      "auto-approve": 8782,
+      "review-medium": 1199,
+      "review-high": 19
+    },
+    "band_distribution": {
+      "low": 8782,
+      "medium": 1199,
+      "high": 19
+    },
+    "velocity_escalations": 1198,
+    "fraud_in_replay": 24,
+    "fraud_routed_to_review": 21,
+    "fraud_routed_to_review_high": 19,
+    "fraud_review_capture_rate": 0.875
+  }
+}
